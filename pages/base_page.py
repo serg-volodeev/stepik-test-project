@@ -33,14 +33,8 @@ class BasePage:
         except NoAlertPresentException:
             print("No second alert presented")
 
-    def find(self, locator):
+    def find_element(self, locator):
         return self.browser.find_element(*locator)
 
-    def text(self, locator):
-        return self.find(locator).text
-
-    def click(self, locator):
-        self.find(locator).click()
-
     def should_be(self, locator):
-        assert self.is_element_present(*locator), f"Not found element: {locator[1]}"
+        assert self.is_element_present(*locator), f"Not found element: '{locator[1]}'"

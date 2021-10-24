@@ -5,10 +5,16 @@ from .locators import ProductPageLocators
 class ProductPage(BasePage):
 
     def add_product_to_basket(self):
-        self.product_name = self.text(ProductPageLocators.PRODUCT_NAME)
-        self.product_price = self.text(ProductPageLocators.PRODUCT_PRICE)
-        self.click(ProductPageLocators.ADD_TO_BASKET_BUTTON)
+        product_name = self.find_element(ProductPageLocators.PRODUCT_NAME).text
+        product_price = self.find_element(ProductPageLocators.PRODUCT_PRICE).text
+        
+        self.find_element(ProductPageLocators.ADD_TO_BASKET_BUTTON).click()
         self.solve_quiz_and_get_code()
+        self.check_messages(product_name, product_price)
 
-    def should_be_add_to_basket_button(self):
-        self.should_be(ProductPageLocators.ADD_TO_BASKET_BUTTON)
+    def check_messages(self, product_name, product_price):
+        lst = self.browser.find_elements(*ProductPageLocators.MESSAGES)
+        assert len(lst) == 3, "Success message not found"
+
+        assert product_name == lst[0].text, "Wrong name product added to basket"
+        assert product_price == lst[2].text, "Wrong price product added to basket"
