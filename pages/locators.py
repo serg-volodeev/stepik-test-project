@@ -12,4 +12,8 @@ class ProductPageLocators():
     ADD_TO_BASKET_BUTTON = (By.CSS_SELECTOR, ".btn-add-to-basket")
     PRODUCT_NAME = (By.CSS_SELECTOR, ".product_main h1")
     PRODUCT_PRICE = (By.CSS_SELECTOR, ".product_main .price_color")
+    PRODUCT_NAME_MSG = (By.CSS_SELECTOR, "#messages > :first-child strong")
+    PRODUCT_PRICE_MSG = (By.CSS_SELECTOR, "#messages > :last-child strong")
+    
     MESSAGES = (By.CSS_SELECTOR, "#messages .alertinner strong")
+    MESSAGES_BLOCK = (By.CSS_SELECTOR, "#messages :first-child")
