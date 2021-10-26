@@ -35,13 +35,15 @@ class BasePage:
         except NoAlertPresentException:
             print("No second alert presented")
 
-    def find_element(self, locator):
-        return self.browser.find_element(*locator)
+    # def find_element(self, locator):
+    #     return self.browser.find_element(*locator)
 
-    def should_be(self, locator):
-        assert self.is_element_present(*locator), f"Not found element: '{locator[1]}'"
+    # def should_be(self, locator):
+    #     assert self.is_element_present(*locator), f"Not found element: '{locator[1]}'"
 
+    
     def is_not_element_present(self, how, what, timeout=4):
+        '''Проверяет, что элемент не появляется на странице в течение заданного времени'''
         try:
             WebDriverWait(self.browser, timeout).until(EC.presence_of_element_located((how, what)))
         except TimeoutException:
@@ -49,6 +51,7 @@ class BasePage:
         return False
 
     def is_disappeared(self, how, what, timeout=4):
+        '''Проверяет, что элемент исчезает на странице в течение заданного времени'''
         try:
             WebDriverWait(self.browser, timeout, 1, TimeoutException).\
                 until_not(EC.presence_of_element_located((how, what)))

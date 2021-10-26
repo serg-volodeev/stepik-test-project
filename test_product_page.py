@@ -20,6 +20,7 @@ links = [
     "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=newYear2019",
 ]
 
+@pytest.mark.skip
 @pytest.mark.parametrize('link', links)
 def test_guest_can_add_product_to_basket(browser, link):
     page = ProductPage(browser, link)
@@ -35,37 +36,33 @@ def test_guest_can_add_product_to_basket(browser, link):
     page.check_product_price(product_price)
 
 
-# link = "http://selenium1py.pythonanywhere.com/catalogue/the-shellcoders-handbook_209/?promo=newYear"
-# link = "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=newYear2019"
+link = "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/"
 
-# promo_links = [f"http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer{i}" for i in range(10)]
-# promo_links = promo_links[:7] + [pytest.param(promo_links[7], marks=pytest.mark.xfail)] + promo_links[8:]
+@pytest.mark.skip
+def test_guest_cant_see_success_message_after_adding_product_to_basket(browser):
+    # Открываем страницу товара 
+    page = ProductPage(browser, link)
+    page.open()
+    # Добавляем товар в корзину 
+    page.press_button_add_to_basket()
+    # Проверяем, что нет сообщения об успехе с помощью is_not_element_present
+    page.should_not_be_success_message()
+    # Тест должен упасть
 
-# @pytest.mark.parametrize('link', promo_links)
-# def test_guest_can_add_product_to_basket(browser, link):
-#     page = ProductPage(browser, link)
-#     page.open()
-#     page.add_product_to_basket()
+def test_guest_cant_see_success_message(browser):
+    # Открываем страницу товара 
+    page = ProductPage(browser, link)
+    page.open()
+    # Проверяем, что нет сообщения об успехе с помощью is_not_element_present
+    page.should_not_be_success_message()
 
-    # import time
-    # time.sleep(5 * 60)
-
-# def test_guest_cant_see_success_message_after_adding_product_to_basket(browser):
-#     link = "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/"
-#     page = ProductPage(browser, link)
-#     page.open()
-#     page.add_product_to_basket()
-#     page.should_not_be_success_message()
-
-# def test_guest_cant_see_success_message(browser):
-#     link = "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/"
-#     page = ProductPage(browser, link)
-#     page.open()
-#     page.should_not_be_success_message()
-
-# def test_message_disappeared_after_adding_product_to_basket(browser):
-#     link = "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/"
-#     page = ProductPage(browser, link)
-#     page.open()
-#     page.add_product_to_basket()
-#     page.should_not_be_message_disappeared()
+@pytest.mark.skip
+def test_message_disappeared_after_adding_product_to_basket(browser):
+    # Открываем страницу товара 
+    page = ProductPage(browser, link)
+    page.open()
+    # Добавляем товар в корзину 
+    page.press_button_add_to_basket()
+    # Проверяем, что нет сообщения об успехе с помощью is_disappeared
+    page.should_be_message_disappeared()
+    # Тест должен упасть
