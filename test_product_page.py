@@ -1,4 +1,7 @@
+import time
 import pytest
+from pages.base_page import BasePage
+from pages.locators import LoginPageLocators
 from pages.login_page import LoginPage
 from pages.product_page import ProductPage
 from pages.basket_page import BasketPage
@@ -98,3 +101,40 @@ def test_guest_cant_see_product_in_basket_opened_from_product_page(browser):
     basket_page.should_be_no_products_in_basket()
     # Ожидаем, что есть текст о том что корзина пуста
     basket_page.should_be_empty_basket_tag()
+
+
+@pytest.mark.user
+class TestUserAddToBasketFromProductPage():
+
+    @pytest.fixture(scope="function", autouse=True)
+    def setup(self, browser):
+        email = str(time.time()) + "@fakemail.org"
+        password = "AsD$#245^dFx"
+        # открыть страницу регистрации
+        page = ProductPage(browser, link)
+        page.open()
+        page.go_to_login_page()
+        # зарегистрировать нового пользователя
+        login_page = LoginPage(browser, browser.current_url)
+        login_page.register_new_user(email, password)
+        # проверить, что пользователь залогинен
+        login_page.should_be_authorized_user()
+    
+    def test_user_cant_see_success_message(self, browser):
+        # Открываем страницу товара 
+        page = ProductPage(browser, link)
+        page.open()
+        # Проверяем, что нет сообщения об успехе с помощью is_not_element_present
+        page.should_not_be_success_message()
+
+    def test_user_can_add_product_to_basket(self, browser):
+        page = ProductPage(browser, link)
+        page.open()
+        # Запомнить название товара и цену
+        product_name = page.get_product_name()
+        product_price = page.get_product_price()
+        # Нажать кнопку "Добавить в корзину"
+        page.press_button_add_to_basket()
+        # Проверить название и цену в сообщениях
+        page.check_product_name(product_name)
+        page.check_product_price(product_price)
